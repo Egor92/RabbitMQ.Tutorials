@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using RabbitMQ.Client;
 
@@ -20,32 +19,25 @@ namespace RabbitMQ.Tutorials.WorkQueues.Producer
             {
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "task_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                    channel.QueueDeclare(queue: "task_queue", durable: true, exclusive: false, autoDelete: false, arguments: null);
 
+                    int index = 0;
                     while (true)
                     {
-                        var message = GetMessage();
+                        var message = index.ToString();
                         var body = Encoding.UTF8.GetBytes(message);
 
                         var properties = channel.CreateBasicProperties();
                         properties.Persistent = true;
 
                         channel.BasicPublish(exchange: "", routingKey: "task_queue", basicProperties: properties, body: body);
-                        Console.WriteLine(" [x] Sent {0}", message);
+                        Console.Write(" [x] Sent {0}", message);
                         Console.ReadLine();
+
+                        index++;
                     }
                 }
             }
-        }
-
-        private static string GetMessage()
-        {
-            var random = new Random();
-            var chars = Enumerable.Range(0, 10)
-                                  .Select(_ => (char) random.Next(46, 57))
-                                  .ToArray();
-            var word = new string(chars);
-            return word;
         }
     }
 }

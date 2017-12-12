@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using RabbitMQ.Client;
@@ -8,6 +9,7 @@ namespace RabbitMQ.Tutorials.WorkQueues.Consumer
 {
     public static class Program
     {
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
         public static void Main(string[] args)
         {
             Console.Title = "WorkQueues.Consumer";

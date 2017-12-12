@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using RabbitMQ.Client;
 
@@ -6,6 +7,7 @@ namespace RabbitMQ.Tutorials.WorkQueues.Producer
 {
     public static class Program
     {
+        [SuppressMessage("ReSharper", "FunctionNeverReturns")]
         public static void Main(string[] args)
         {
             Console.Title = "WorkQueues.Producer";
